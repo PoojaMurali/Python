@@ -1,0 +1,39 @@
+import csv
+import os
+#Assigning variable to the csv module
+with open('Testfilecsv.csv', 'r') as csv_file:
+    next(csv_file)
+    csv_reader = csv.reader(csv_file)
+    for row in csv_reader:
+        Filetype = row[0]
+        Filepath = row[1]
+        Subdirect = row[2]
+        Findword = row[3]
+        Replaceword = row[4]
+
+        # Assign root,dirpath,filename and join root and individual name in filename
+        for root, dirpath, filename in os.walk(Filepath):
+            print(root)
+            print(dirpath)
+            print(filename)
+            #C:\Documents\Password1
+            #['Samplefoder2', 'Samplefolder1']
+            #['meshfilecopy1.msh']
+            for name in filename:
+                if name.endswith('.msh' or '.mshs'):
+                    print(name)
+                    #meshfilecopy1.msh
+                    rfilepath = os.path.join(root, name)
+                    print(rfilepath)
+                    #C:\Documents\Password1\meshfilecopy1.msh
+                    # Read the rootpath(root,name)
+                    readfileobj = open(rfilepath, 'r')
+                    readfiledata = readfileobj.read()
+                    readfileobj.close()
+                    # Replace the Findword only in .msh or.mshs
+                    replaceword = readfiledata.replace(Findword, Replaceword)
+                    # Overwrite the mesh file
+                    writefileobj = open(rfilepath, 'w')
+                    writefileobj.write(replaceword)
+                    print(replaceword)
+                    writefileobj.close()
